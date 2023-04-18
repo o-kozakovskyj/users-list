@@ -1,17 +1,17 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import * as Styled from "./Header.Styled";
+import { useNavigate } from "react-router-dom";
 
 export default function ButtonAppBar() {
+  let navigate = useNavigate();
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+    <Styled.Header>
+      <Styled.Nav>
+        <Styled.NavMenu>
           <IconButton
             size="large"
             edge="start"
@@ -21,12 +21,13 @@ export default function ButtonAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
+          <Box>
+            <Button color='inherit' onClick={() => navigate("/")}>Home</Button>
+            <Button color='inherit' onClick={() => navigate("/users")}>Users</Button>
+          </Box>
+        </Styled.NavMenu>
+      </Styled.Nav>
+    </Styled.Header>
+
   );
 }
