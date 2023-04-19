@@ -1,29 +1,44 @@
-import * as React from 'react';
 import { Table,Button, InputBase, Box, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton } from '@mui/material';
 import { EditRounded, DeleteForeverRounded } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import ModalForm from '../ModalForm';
-import { fetchUsersList } from '../gateway';
-import * as Styled from './UserList.styled';
+import { fetchUsers, deleteUser } from '../gateway';
 import { useNavigate } from "react-router-dom";
-
-
+import { useDispatch,useSelector } from "react-redux";
+import { getUsers, getUsersError, getUsersStatus } from './UsersSlice';
+import * as Styled from './UserList.styled';
 
 const UsersList = () => {
-  const [list, setList] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  React.useEffect(() => {
-    fetchUsersList.then(data=>setList(data))
-  }, [])
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const handleModal = (e) => {
     e.stopPropagation();
     setIsModalOpen(!isModalOpen)
   }
+  const handleDelete = (e,id)=>{
+    e.stopPropagation();
+    dispatch(deleteUser(id));
+  }
+  const dispatch = useDispatch()
+  const users = useSelector(getUsers)|| []
+  const usersStatus = useSelector(getUsersStatus)
+  const error = useSelector(getUsersError)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  useEffect(() => {
+    if (usersStatus === 'idle') {
+     dispatch(fetchUsers())
+   }
+  }, [dispatch, usersStatus])
+
+  if (usersStatus === "loading") {
+    return <div>Loading...</div>;
+  }
+  if (usersStatus === "failed") {
+    return <div>{error}</div>;
+  }
   return (
     <Styled.ListContainer>
-      <Box sx={{ }}>
-        <Typography variant='h4'>Users List</Typography>
+      <Typography variant='h4'>Users List</Typography>
+      <Box sx={{ }}> 
         <InputBase
           sx={{ ml: 1, padding: '4px', borderRadius: '16px', flex: 1, border: '1px solid #000', width:"100%", maxWidth: '600px' }}
           placeholder="Search User"      
@@ -41,7 +56,7 @@ const UsersList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {list.map((user) => (
+          {users.map((user) => (
             <TableRow
               key={user.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: "pointer"}}
@@ -56,7 +71,7 @@ const UsersList = () => {
               <TableCell align="right">{user.username}</TableCell>
               <TableCell align="right">
                 <IconButton onClick={handleModal}><EditRounded/></IconButton>
-                <IconButton onClick={handleModal}><DeleteForeverRounded/></IconButton>
+                <IconButton onClick={(e)=>handleDelete(e,user.id)}><DeleteForeverRounded/></IconButton>
               </TableCell>
             </TableRow>
           ))}

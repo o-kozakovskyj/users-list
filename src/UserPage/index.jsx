@@ -15,10 +15,10 @@ const UserPage = () => {
   const navigate = useNavigate();
   return (
     <Styled.CardContainer>
-      {id>1 && <IconButton>
-        <ArrowBackIosNewRounded onClick={() => navigate({
+      {id>1 && <IconButton onClick={() => navigate({
           pathname: `/users/${user.id - 1}`
-        })}  />
+        })}>
+        <ArrowBackIosNewRounded/>
       </IconButton>}
      
       <Styled.CardInfo>
@@ -76,10 +76,10 @@ const UserPage = () => {
           </Typography>
         </Styled.Content>
       </Styled.CardInfo>
-      {id<10 && <IconButton>
-        <ArrowForwardIosRounded onClick={() => navigate({
+      {id<10 && <IconButton onClick={() => navigate({
           pathname: `/users/${user.id + 1}`
-        })} />
+        })}>
+        <ArrowForwardIosRounded/>
       </IconButton>}
      
     </Styled.CardContainer>
