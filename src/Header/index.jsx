@@ -1,29 +1,25 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import * as Styled from "./Header.Styled";
 import { useNavigate } from "react-router-dom";
 
 export default function ButtonAppBar() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Styled.Header>
       <Styled.Nav>
         <Styled.NavMenu>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
+          <Styled.MenuButton>
             <MenuIcon />
-          </IconButton>
+          </Styled.MenuButton>
           <Box>
-            <Button color='inherit' onClick={() => navigate("/")}>Home</Button>
-            <Button color='inherit' onClick={() => navigate("/users")}>Users</Button>
+            <Styled.NavButton onClick={() => navigate("/")}>
+              Home
+            </Styled.NavButton>
+            <Styled.NavButton onClick={() => navigate("/users")}>
+              Users
+            </Styled.NavButton>
           </Box>
         </Styled.NavMenu>
       </Styled.Nav>
