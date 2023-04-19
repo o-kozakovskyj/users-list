@@ -1,17 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, deleteUser } from "../gateway";
+import { fetchUsers, deleteUser, addUser } from "../gateway";
 
 const initialState = {
   users: [],
   status: 'idle',
   error: null,
   searchTerm: '',
+  currentUser: {},
 }
-export const UsersSlice = createSlice({
+export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-   
+    getUserById: (state, action) => {
+      state.currentUser= state.users.find(user=> user.id.toString() === action.payload.toString())
+    },
+    searchUsers: (state, action) => {
+      state.searchTerm = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -40,9 +46,34 @@ export const UsersSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(addUser.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(addUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(addUser.fulfilled, (state, action) => {
+        state.users.push(action.payload)
+        state.status = "succeeded";
+        state.error = null;
+
+      })
   }
 });
+export const { getUserById,searchUsers } = usersSlice.actions;
 export const getUsers = (state) => state.users.users;
+export const selectUsersBySearch = (state) => {
+  const { searchTerm, users } = state.users;
+  if (searchTerm === "") {
+    return users;
+  }
+  return users.filter((user) => {
+    return user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.username.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+}
+export const currentUser = (state) => state.users.currentUser;
 export const getUsersStatus = (state) => state.users.status;
 export const getUsersError = (state) => state.users.error;
-export default UsersSlice.reducer;
+export default usersSlice.reducer;

@@ -1,33 +1,35 @@
-import { Table,Button, InputBase, Box, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton } from '@mui/material';
+import { TableBody, TableHead, TableRow, IconButton } from '@mui/material';
 import { EditRounded, DeleteForeverRounded } from '@mui/icons-material';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ModalForm from '../ModalForm';
 import { fetchUsers, deleteUser } from '../gateway';
 import { useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
-import { getUsers, getUsersError, getUsersStatus } from './UsersSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { getUsersError, getUsersStatus, selectUsersBySearch, searchUsers } from './UsersSlice';
 import * as Styled from './UserList.styled';
 
 const UsersList = () => {
+  const [search, setSearch] = useState('')
   const navigate = useNavigate();
   const handleModal = (e) => {
     e.stopPropagation();
     setIsModalOpen(!isModalOpen)
   }
-  const handleDelete = (e,id)=>{
+  const handleDelete = (e, id) => {
     e.stopPropagation();
     dispatch(deleteUser(id));
   }
   const dispatch = useDispatch()
-  const users = useSelector(getUsers)|| []
+  const users = useSelector(selectUsersBySearch) || []
   const usersStatus = useSelector(getUsersStatus)
   const error = useSelector(getUsersError)
   const [isModalOpen, setIsModalOpen] = useState(false)
   useEffect(() => {
+    dispatch(searchUsers(search))
     if (usersStatus === 'idle') {
-     dispatch(fetchUsers())
-   }
-  }, [dispatch, usersStatus])
+      dispatch(fetchUsers())
+    }
+  }, [dispatch, search, usersStatus])
 
   if (usersStatus === "loading") {
     return <div>Loading...</div>;
@@ -37,47 +39,62 @@ const UsersList = () => {
   }
   return (
     <Styled.ListContainer>
-      <Typography variant='h4'>Users List</Typography>
-      <Box sx={{ }}> 
-        <InputBase
-          sx={{ ml: 1, padding: '4px', borderRadius: '16px', flex: 1, border: '1px solid #000', width:"100%", maxWidth: '600px' }}
-          placeholder="Search User"      
+      <Styled.Title>
+        Users List
+      </Styled.Title>
+      <Styled.TopActions>
+        <Styled.SearchField
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <Button onClick={handleModal}>Add User</Button>
-      </Box>     
-      <TableContainer component={Paper} sx={{ maxWidth: '600px' }}>
-      <Table sx={{ minWidth: 300 }} aria-label="a dense table">
-        <TableHead >
-          <TableRow >
-            <TableCell sx={{fontWeight: '600'}}>Id</TableCell>
-              <TableCell sx={{ fontWeight: '600' }} align="right">Name</TableCell>
-              <TableCell sx={{ fontWeight: '600' }} align="right">UserName</TableCell>
-              <TableCell sx={{ fontWeight: '600' }} align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow
-              key={user.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: "pointer"}}
-              onClick={() => navigate({
-                pathname:`/users/${user.id}`
-              })}
-            >
-              <TableCell component="th" scope="row">
-                {user.id}
-              </TableCell>
-              <TableCell align="right">{user.name}</TableCell>
-              <TableCell align="right">{user.username}</TableCell>
-              <TableCell align="right">
-                <IconButton onClick={handleModal}><EditRounded/></IconButton>
-                <IconButton onClick={(e)=>handleDelete(e,user.id)}><DeleteForeverRounded/></IconButton>
-              </TableCell>
+        <Styled.Btn onClick={handleModal}>Add User</Styled.Btn>
+      </Styled.TopActions>
+      <Styled.TableBox>
+        <Styled.UsersTable>
+          <TableHead >
+            <TableRow >
+              <Styled.TableHeader>
+                Id
+              </Styled.TableHeader>
+              <Styled.TableHeader>
+                Name
+              </Styled.TableHeader>
+              <Styled.TableHeader>
+                User Name
+              </Styled.TableHeader>
+              <Styled.TableHeader>
+                Actions
+              </Styled.TableHeader>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      </TableContainer>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <Styled.Row
+                key={user.id}
+                onClick={() => navigate({ pathname: `/users/${user.id}` })}
+              >
+                <Styled.Cell>
+                  {user.id}
+                </Styled.Cell>
+                <Styled.Cell>
+                  {user.name}
+                </Styled.Cell>
+                <Styled.Cell>
+                  {user.username}
+                </Styled.Cell>
+                <Styled.Cell>
+                  <IconButton onClick={handleModal}>
+                    <EditRounded />
+                  </IconButton>
+                  <IconButton onClick={(e) => handleDelete(e, user.id)}>
+                    <DeleteForeverRounded />
+                  </IconButton>
+                </Styled.Cell>
+              </Styled.Row>
+            ))}
+          </TableBody>
+        </Styled.UsersTable>
+      </Styled.TableBox>
       {isModalOpen && <ModalForm />}
     </Styled.ListContainer>
   );

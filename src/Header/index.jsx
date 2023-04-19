@@ -1,17 +1,16 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
-import MenuIcon from '@mui/icons-material/Menu';
-import * as Styled from "./Header.Styled";
+import Diversity2Icon from '@mui/icons-material/Diversity2';
 import { useNavigate } from "react-router-dom";
+import * as Styled from "./Header.styled";
 
-export default function ButtonAppBar() {
+const Header = () => {
   const navigate = useNavigate();
   return (
     <Styled.Header>
       <Styled.Nav>
         <Styled.NavMenu>
-          <Styled.MenuButton>
-            <MenuIcon />
+          <Styled.MenuButton onClick={() => navigate("/")}>
+            <Diversity2Icon />
           </Styled.MenuButton>
           <Box>
             <Styled.NavButton onClick={() => navigate("/")}>
@@ -24,6 +23,6 @@ export default function ButtonAppBar() {
         </Styled.NavMenu>
       </Styled.Nav>
     </Styled.Header>
-
   );
 }
+export default Header;

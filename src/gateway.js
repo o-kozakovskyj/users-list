@@ -13,13 +13,13 @@ export const fetchUsers = createAsyncThunk(
     return response.data;
   }
 );
-// export const addUser = createAsyncThunk(
-//   "products/addProduct",
-//   async (user) => {
-//     const response = await axios.post(`${URL}/add`, { ...product, id: Date.now() });
-//     return response.data;
-//   }
-// );
+export const addUser = createAsyncThunk(
+  "users/addUser",
+  async (user) => {
+    const response = await axios.post(`${URL}`, { ...user });
+    return response.data;
+  }
+);
 export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id) => {

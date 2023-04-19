@@ -1,26 +1,31 @@
 import { Divider, Typography, Box, IconButton } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { AlternateEmail, WebRounded, ArrowBackIosNewRounded, ArrowForwardIosRounded, PersonOutlineRounded, LocationCity, LocationOn, Phone } from '@mui/icons-material'
-import { useState, useEffect } from 'react';
-import { fetchUserById } from '../gateway';
+import {  useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import * as Styled from './UserPage.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserById, currentUser } from '../UsersList/UsersSlice';
 
 const UserPage = () => {
-  const [user, setUser] = useState({})
+  const user= useSelector(currentUser)
+  const dispatch = useDispatch();
   const { id } = useParams()
-  useEffect(() => {
-    fetchUserById(id).then(data => setUser(data))
-  }, [id])
-  const navigate = useNavigate();
+   const navigate = useNavigate();
+  useEffect(() => { 
+    if (id) {
+      dispatch(getUserById(id))
+    }
+    
+  }, [dispatch, id])
+  console.log(user)
   return (
     <Styled.CardContainer>
       {id>1 && <IconButton onClick={() => navigate({
           pathname: `/users/${user.id - 1}`
         })}>
         <ArrowBackIosNewRounded/>
-      </IconButton>}
-     
+      </IconButton>}   
       <Styled.CardInfo>
         <Styled.Name>
           {user.name}
