@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, deleteUser, addUser } from "../gateway";
+import { fetchUsers, deleteUser, addUser, updateUser } from "../gateway";
 
 const initialState = {
   users: [],
@@ -58,7 +58,20 @@ export const usersSlice = createSlice({
         state.users.push(action.payload)
         state.status = "succeeded";
         state.error = null;
-
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.users = state.users.filter((user) => user.id.toString() !== action.payload.id.toString());
+        state.users.unshift(action.payload)
+        state.status = "succeeded";
+        state.error = null;
       })
   }
 });

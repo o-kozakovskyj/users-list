@@ -1,19 +1,22 @@
 import { TableBody, TableHead, TableRow, IconButton } from '@mui/material';
-import { EditRounded, DeleteForeverRounded } from '@mui/icons-material';
+import { DeleteForeverRounded } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
-import ModalForm from '../ModalForm';
 import { fetchUsers, deleteUser } from '../gateway';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersError, getUsersStatus, selectUsersBySearch, searchUsers } from './UsersSlice';
+import AddModal from '../AddModal';
 import * as Styled from './UserList.styled';
 
 const UsersList = () => {
   const [search, setSearch] = useState('')
   const navigate = useNavigate();
-  const handleModal = (e) => {
-    e.stopPropagation();
-    setIsModalOpen(!isModalOpen)
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const handleAddClose = () => {
+    setIsAddOpen(false)
+  }
+  const handleAddOpen = () => {
+    setIsAddOpen(true)
   }
   const handleDelete = (e, id) => {
     e.stopPropagation();
@@ -23,7 +26,6 @@ const UsersList = () => {
   const users = useSelector(selectUsersBySearch) || []
   const usersStatus = useSelector(getUsersStatus)
   const error = useSelector(getUsersError)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   useEffect(() => {
     dispatch(searchUsers(search))
     if (usersStatus === 'idle') {
@@ -37,6 +39,7 @@ const UsersList = () => {
   if (usersStatus === "failed") {
     return <div>{error}</div>;
   }
+  console.log(users)
   return (
     <Styled.ListContainer>
       <Styled.Title>
@@ -47,7 +50,7 @@ const UsersList = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Styled.Btn onClick={handleModal}>Add User</Styled.Btn>
+        <Styled.Btn onClick={handleAddOpen}>Add User</Styled.Btn>
       </Styled.TopActions>
       <Styled.TableBox>
         <Styled.UsersTable>
@@ -73,29 +76,36 @@ const UsersList = () => {
                 key={user.id}
                 onClick={() => navigate({ pathname: `/users/${user.id}` })}
               >
-                <Styled.Cell>
-                  {user.id}
-                </Styled.Cell>
-                <Styled.Cell>
-                  {user.name}
-                </Styled.Cell>
-                <Styled.Cell>
-                  {user.username}
-                </Styled.Cell>
-                <Styled.Cell>
-                  <IconButton onClick={handleModal}>
-                    <EditRounded />
-                  </IconButton>
-                  <IconButton onClick={(e) => handleDelete(e, user.id)}>
-                    <DeleteForeverRounded />
-                  </IconButton>
-                </Styled.Cell>
+                {user.edited &&
+                  <>
+                  <Styled.EditedCell>{user.id}</Styled.EditedCell>
+                  <Styled.EditedCell>{user.name}</Styled.EditedCell>
+                  <Styled.EditedCell>{user.username}</Styled.EditedCell>
+                  <Styled.EditedCell>
+                    <IconButton onClick={(e) => handleDelete(e, user.id)}>
+                      <DeleteForeverRounded />
+                    </IconButton>
+                  </Styled.EditedCell>
+                </>
+                }
+                {!user.edited &&
+                  <>
+                    <Styled.Cell>{user.id}</Styled.Cell>
+                    <Styled.Cell>{user.name}</Styled.Cell>
+                    <Styled.Cell>{user.username}</Styled.Cell>
+                    <Styled.Cell>
+                      <IconButton onClick={(e) => handleDelete(e, user.id)}>
+                        <DeleteForeverRounded />
+                      </IconButton>
+                    </Styled.Cell>
+                  </>
+                }
               </Styled.Row>
             ))}
           </TableBody>
         </Styled.UsersTable>
       </Styled.TableBox>
-      {isModalOpen && <ModalForm />}
+      {isAddOpen && <AddModal closeModal={handleAddClose} isAddOpen={isAddOpen} />}
     </Styled.ListContainer>
   );
 }

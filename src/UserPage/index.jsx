@@ -1,93 +1,77 @@
-import { Divider, Typography, Box, IconButton } from '@mui/material';
+import { Avatar, IconButton, Card, CardHeader, CardContent, CardActions } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { AlternateEmail, WebRounded, ArrowBackIosNewRounded, ArrowForwardIosRounded, PersonOutlineRounded, LocationCity, LocationOn, Phone } from '@mui/icons-material'
-import {  useEffect } from 'react';
+import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material'
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import * as Styled from './UserPage.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserById, currentUser } from '../UsersList/UsersSlice';
+import EditModal from '../EditModal';
+import { yellow } from '@mui/material/colors';
+import * as Styled from './UserPage.styled';
 
 const UserPage = () => {
-  const user= useSelector(currentUser)
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const handleEditClose = () => {
+    setIsEditOpen(false)
+  }
+  const user = useSelector(currentUser) || {}
   const dispatch = useDispatch();
-  const { id } = useParams()
-   const navigate = useNavigate();
-  useEffect(() => { 
+  const { id } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
     if (id) {
       dispatch(getUserById(id))
     }
-    
   }, [dispatch, id])
-  console.log(user)
-  return (
-    <Styled.CardContainer>
-      {id>1 && <IconButton onClick={() => navigate({
+  if (user) {
+    return (
+      <div style={{ display: "flex" }}>
+        {id > 1 && <IconButton onClick={() => navigate({
           pathname: `/users/${user.id - 1}`
         })}>
-        <ArrowBackIosNewRounded/>
-      </IconButton>}   
-      <Styled.CardInfo>
-        <Styled.Name>
-          {user.name}
-        </Styled.Name>
-        <Divider orientation="vertical" flexItem />
-        <Styled.Content >
-          <Typography>
-            {user?.company?.name}
-          </Typography>
-          <Typography>
-            {user?.company?.catchPhrase}
-          </Typography>
-          <Typography>
-            {user?.company?.bs}
-          </Typography>
-          <Typography>
-            <PersonOutlineRounded />
-            {user.username}
-          </Typography>
-          <Typography>
-            <AlternateEmail />
-            {user.email}
-          </Typography>
-          <Typography>
-            <WebRounded />
-            {user.website}
-          </Typography>
-          <Typography>
-            <Phone />
-            {user.phone}
-          </Typography>
-          <Typography>
-            <LocationCity />
-            {user?.address?.city}
-          </Typography>
-          <Typography>
-            <LocationOn />
-            <Box>
-              <Typography>
-                {`str: ${user?.address?.street} `}
-              </Typography>
-              <Typography>
-                {`suite: ${user?.address?.suite} `}
-              </Typography>
-              <Typography>
-                {`zipcode: ${user?.address?.zipcode} `}
-              </Typography>
-              <Typography>
-                {`geo: lat ${user?.address?.geo?.lat} 
-                lng${user?.address?.geo?.lng}`}
-              </Typography>
-            </Box>
-          </Typography>
-        </Styled.Content>
-      </Styled.CardInfo>
-      {id<10 && <IconButton onClick={() => navigate({
-          pathname: `/users/${user.id + 1}`
-        })}>
-        <ArrowForwardIosRounded/>
-      </IconButton>}
-     
-    </Styled.CardContainer>
-  )
+          <ArrowBackIosNewRounded />
+        </IconButton>}
+        <Card sx={{ maxWidth: 345, margin: "10vh auto" }}>
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: yellow[500] }} aria-label="recipe">
+                {user.name && user.name[0]}
+              </Avatar>
+            }
+            title={user.name}
+            subheader={user.username}
+          />
+          <CardContent>
+            <Styled.Text>company: {user?.company?.name}</Styled.Text>
+            <Styled.Text> catchPhrase: {user?.company?.catchPhrase}</Styled.Text>
+            <Styled.Text>bs: {user?.company?.bs}</Styled.Text>
+            <Styled.Text>e-mail: {user?.email}</Styled.Text>
+            <Styled.Text> web: {user?.website}</Styled.Text>
+            <Styled.Text>phone: {user?.phone}</Styled.Text>
+            <Styled.Text>city:{user?.address?.city}</Styled.Text>
+            <Styled.Text>street: {user?.address?.street}</Styled.Text>
+            <Styled.Text>suite: {user?.address?.suite}</Styled.Text>
+            <Styled.Text> zipcode: {user?.address?.zipcode}</Styled.Text>
+            <Styled.Text>geo lat: {user?.address?.geo?.lat}
+            </Styled.Text>geo lng: {user?.address?.geo?.lng}Styled.
+          </CardContent>
+          <CardActions disableSpacing>
+            <Styled.Edit onClick={() => setIsEditOpen(true)}>
+              Edit
+            </Styled.Edit>
+          </CardActions>
+        </Card >
+        {
+          id < 10 && <IconButton onClick={() => navigate({
+            pathname: `/users/${user.id + 1}`
+          })}>
+            <ArrowForwardIosRounded />
+          </IconButton>
+        }
+        {isEditOpen && <EditModal user={user} closeModal={handleEditClose} isEditOpen={isEditOpen} />}
+      </div >
+    );
+  }
+  return (<div>...Loading</div>)
 }
 export default UserPage;

@@ -46,8 +46,10 @@ export const TableHeader = styled(props => <TableCell {...props} align="right" /
   font-weight: 600;
 `;
 export const Cell = styled(props => <TableCell {...props} align="right" />)`
-
 `;
+export const EditedCell = styled(props =>
+  <TableCell {...props} align="right" sx={{ fontFamily: 'TitilliumWeb', fontStyle: "italic" }} />)``;
+
 export const Row = styled(TableRow)`
   cursor: pointer;
   &:last-child td,

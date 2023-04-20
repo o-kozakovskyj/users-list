@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Box, Card, Typography, CardContent } from '@mui/material';
+import { Box, Card, Typography, CardContent, Button } from '@mui/material';
+import { EditRounded } from '@mui/icons-material';
 
 export const CardContainer = styled(Box)`
   display: flex;
@@ -18,10 +19,13 @@ export const Name = styled(props=><Typography  variant="h5" {...props}/>)`
   margin-right: 16px!important;
 `
 export const Content = styled(CardContent)`
-  .MuiTypography-root {
-    display: flex;
+  
+`;
+export const Text = styled(Typography)`
+   display: flex;
     justify-content: space-between;
-  }
-
+`
+export const Edit = styled(props => <Button {...props} variant="outlined" startIcon={<EditRounded />} color="success" />)`
+  width:100%;
 `
   
