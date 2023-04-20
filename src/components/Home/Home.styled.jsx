@@ -8,7 +8,7 @@ export const HomeBox = styled(Paper)`
   justify-content: space-around;
   background-image: url("/main.svg");
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

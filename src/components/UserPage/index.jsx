@@ -33,7 +33,7 @@ const UserPage = () => {
   }, [dispatch, id])
   if (user) {
     return (
-      <div style={{ display: "flex" }}>
+      <Styled.CardContainer>
         {id > 1 && <IconButton onClick={() => navigate({
           pathname: `/users/${user.id - 1}`
         })}>
@@ -50,18 +50,18 @@ const UserPage = () => {
             subheader={user.username}
           />
           <CardContent>
-            <Styled.Text>company: {user?.company?.name}</Styled.Text>
-            <Styled.Text> catchPhrase: {user?.company?.catchPhrase}</Styled.Text>
-            <Styled.Text>bs: {user?.company?.bs}</Styled.Text>
-            <Styled.Text>e-mail: {user?.email}</Styled.Text>
-            <Styled.Text> web: {user?.website}</Styled.Text>
-            <Styled.Text>phone: {user?.phone}</Styled.Text>
-            <Styled.Text>city:{user?.address?.city}</Styled.Text>
-            <Styled.Text>street: {user?.address?.street}</Styled.Text>
-            <Styled.Text>suite: {user?.address?.suite}</Styled.Text>
-            <Styled.Text> zipcode: {user?.address?.zipcode}</Styled.Text>
-            <Styled.Text>geo lat: {user?.address?.geo?.lat}
-            </Styled.Text>geo lng: {user?.address?.geo?.lng}Styled.
+            <Styled.Text><b>company: </b> {user?.company?.name}</Styled.Text>
+            <Styled.Text><b>catchPhrase: </b> {user?.company?.catchPhrase}</Styled.Text>
+            <Styled.Text><b>bs: </b> {user?.company?.bs}</Styled.Text>
+            <Styled.Text><b>e-mail: </b> {user?.email}</Styled.Text>
+            <Styled.Text><b>web: </b>  {user?.website}</Styled.Text>
+            <Styled.Text><b>phone: </b> {user?.phone}</Styled.Text>
+            <Styled.Text><b>city: </b>{user?.address?.city}</Styled.Text>
+            <Styled.Text><b>street: </b> {user?.address?.street}</Styled.Text>
+            <Styled.Text><b>suite: </b> {user?.address?.suite}</Styled.Text>
+            <Styled.Text><b>zipcode: </b>  {user?.address?.zipcode}</Styled.Text>
+            <Styled.Text><b>geo lat: </b> {user?.address?.geo?.lat}
+            </Styled.Text><b>geo lng: </b> {user?.address?.geo?.lng}Styled.
           </CardContent>
           <CardActions disableSpacing>
             <Styled.Edit onClick={() => setIsEditOpen(true)}>
@@ -77,7 +77,7 @@ const UserPage = () => {
           </IconButton>
         }
         {isEditOpen && <EditModal user={user} closeModal={handleEditClose} isEditOpen={isEditOpen} />}
-      </div >
+      </Styled.CardContainer >
     );
   }
   return (<CircularProgress />)
