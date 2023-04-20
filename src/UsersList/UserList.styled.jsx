@@ -29,7 +29,7 @@ export const TopActions = styled(Box)`
 export const SearchField = styled(props => <InputBase {...props} placeholder="Search User" />)`
   margin: 16px;
   padding: 0 9px;
-  border: 1px solid #2e7d32;
+  border: 1px solid #add9af;
   border-top-left-radius: 16px;
 `;
 export const Btn = styled(props => <Button {...props} variant="outlined" color="success" />)`
@@ -57,3 +57,8 @@ export const Row = styled(TableRow)`
     border: 0
   };
 `;
+export const SpinnerBox= styled(Box)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`

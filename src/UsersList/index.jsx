@@ -1,4 +1,4 @@
-import { TableBody, TableHead, TableRow, IconButton } from '@mui/material';
+import { TableBody, TableHead, TableRow, IconButton, CircularProgress } from '@mui/material';
 import { DeleteForeverRounded } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { fetchUsers, deleteUser } from '../gateway';
@@ -34,12 +34,13 @@ const UsersList = () => {
   }, [dispatch, search, usersStatus])
 
   if (usersStatus === "loading") {
-    return <div>Loading...</div>;
+    return <Styled.SpinnerBox>
+      <CircularProgress color="success" />
+    </Styled.SpinnerBox>;
   }
   if (usersStatus === "failed") {
     return <div>{error}</div>;
   }
-  console.log(users)
   return (
     <Styled.ListContainer>
       <Styled.Title>
@@ -78,15 +79,15 @@ const UsersList = () => {
               >
                 {user.edited &&
                   <>
-                  <Styled.EditedCell>{user.id}</Styled.EditedCell>
-                  <Styled.EditedCell>{user.name}</Styled.EditedCell>
-                  <Styled.EditedCell>{user.username}</Styled.EditedCell>
-                  <Styled.EditedCell>
-                    <IconButton onClick={(e) => handleDelete(e, user.id)}>
-                      <DeleteForeverRounded />
-                    </IconButton>
-                  </Styled.EditedCell>
-                </>
+                    <Styled.EditedCell>{user.id}</Styled.EditedCell>
+                    <Styled.EditedCell>{user.name}</Styled.EditedCell>
+                    <Styled.EditedCell>{user.username}</Styled.EditedCell>
+                    <Styled.EditedCell>
+                      <IconButton onClick={(e) => handleDelete(e, user.id)}>
+                        <DeleteForeverRounded />
+                      </IconButton>
+                    </Styled.EditedCell>
+                  </>
                 }
                 {!user.edited &&
                   <>

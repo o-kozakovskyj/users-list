@@ -1,4 +1,12 @@
-import { Avatar, IconButton, Card, CardHeader, CardContent, CardActions } from '@mui/material';
+import {
+  Avatar,
+  IconButton,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  CircularProgress
+} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material'
 import { useEffect, useState } from 'react';
@@ -72,6 +80,6 @@ const UserPage = () => {
       </div >
     );
   }
-  return (<div>...Loading</div>)
+  return (<CircularProgress />)
 }
 export default UserPage;

@@ -83,10 +83,13 @@ export const selectUsersBySearch = (state) => {
     return users;
   }
   return users.filter((user) => {
-    return user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.username.toLowerCase().includes(searchTerm.toLowerCase());
+    return user.name.toLowerCase()
+      .includes(searchTerm.toLowerCase()) || user.username.toLowerCase()
+      .includes(searchTerm.toLowerCase());
   });
 }
 export const currentUser = (state) => state.users.currentUser;
 export const getUsersStatus = (state) => state.users.status;
 export const getUsersError = (state) => state.users.error;
+export const searchTerm = (state) => state.users.searchTerm;
 export default usersSlice.reducer;

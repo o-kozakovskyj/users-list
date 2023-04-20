@@ -16,9 +16,10 @@ export const HomeBox = styled(Paper)`
 export const Greetings = styled.h4`
   color: #fff;
   font-size: calc(1em + 1vw);
-  margin: 0;
+  margin: 0 0  32px 0;
 `;
 export const Text = styled(Typography)`
+
  width: 280px;
  color: #fff;
 font-size: calc(1em + 1vw);
