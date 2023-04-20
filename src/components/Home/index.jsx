@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import * as Styled from './Home.styled';
 
 const Home = () => {
@@ -11,35 +11,33 @@ const Home = () => {
           Hello User!
         </Styled.Greetings>
         <Styled.Text>
-          <p>This amazing app will help you to
+          <Typography>This amazing app will help you to
             view users from your database in a
             list or in detail for each user by
             clicking on the user's row.
-          </p>
-          <p>You can
+          </Typography>
+          <Typography>You can
             add a new user by clicking on the Add
             button.
-          </p>
-          <p>
+          </Typography>
+          <Typography>
             Or you can delete a user
             by clicking on the icon in the table.
-          </p>
-          <p>
+          </Typography>
+          <Typography>
             You also can update a user
             by clicking on the edit button  on user`s page.
-          </p>
-          <p>
+          </Typography>
+          <Typography>
             We sincerely hope that our application
             will allow you to get the most out of your
             database.
-          </p>
-
+          </Typography>
+          <Styled.Btn onClick={() => navigate("/users")}>
+            Users
+          </Styled.Btn>
         </Styled.Text>
       </Box>
-
-      <Styled.Btn onClick={() => navigate("/users")}>
-        Users
-      </Styled.Btn>
     </Styled.HomeBox>
   )
 }

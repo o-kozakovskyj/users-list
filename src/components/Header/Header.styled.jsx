@@ -3,6 +3,11 @@ import { Box, AppBar, Toolbar, IconButton, Button } from '@mui/material';
 
 export const Header = styled(Box)`
   flex-grow: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
 `;
 export const Nav = styled(props => < AppBar position="static" {...props} color="success" />)`
 display: flex;

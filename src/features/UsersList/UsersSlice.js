@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, deleteUser, addUser, updateUser } from "../gateway";
+import { fetchUsers, deleteUser, addUser, updateUser } from "../../gateway";
 
 const initialState = {
   users: [],

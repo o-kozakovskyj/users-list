@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../gateway';
+import { addUser } from '../../gateway';
 import * as Styled from './AddModal.styled';
 
 const AddModal = ({ closeModal, isAddOpen }) => {

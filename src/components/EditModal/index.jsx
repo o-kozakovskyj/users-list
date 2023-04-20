@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../gateway';
+import { updateUser } from '../../gateway';
 import { useNavigate } from "react-router-dom";
 import * as Styled from './EditModal.styled';
 

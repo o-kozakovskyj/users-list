@@ -1,11 +1,11 @@
 import { TableBody, TableHead, TableRow, IconButton, CircularProgress } from '@mui/material';
 import { DeleteForeverRounded } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
-import { fetchUsers, deleteUser } from '../gateway';
+import { fetchUsers, deleteUser } from '../../gateway';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersError, getUsersStatus, selectUsersBySearch, searchUsers } from './UsersSlice';
-import AddModal from '../AddModal';
+import AddModal from '../../components/AddModal';
 import * as Styled from './UserList.styled';
 
 const UsersList = () => {

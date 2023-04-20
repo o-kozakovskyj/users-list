@@ -12,7 +12,7 @@ import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-mater
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserById, currentUser } from '../UsersList/UsersSlice';
+import { getUserById, currentUser } from '../../features/UsersList/UsersSlice';
 import EditModal from '../EditModal';
 import { yellow } from '@mui/material/colors';
 import * as Styled from './UserPage.styled';

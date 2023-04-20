@@ -1,7 +1,7 @@
-import Header from "./Header";
-import UsersList from './UsersList';
-import UserPage from './UserPage';
-import Home from './Home';
+import Header from "./components/Header";
+import UsersList from './features/UsersList';
+import UserPage from './components/UserPage';
+import Home from './components/Home';
 import './App.css';
 import {
   BrowserRouter,
